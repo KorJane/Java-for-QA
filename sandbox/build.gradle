@@ -1,3 +1,3 @@
 apply plugin: 'java'
-apply plugin: 'appcication'
+apply plugin: 'application'
 mainClassName = "MyFirstProject"
