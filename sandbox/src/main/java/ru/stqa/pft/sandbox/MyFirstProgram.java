@@ -1,5 +1,7 @@
 package ru.stqa.pft.sandbox;
 
+import sun.plugin.dom.css.Rect;
+
 /**
  * Created by a.a.kornilov on 2/2/2018.
  */
@@ -7,25 +9,21 @@ public class MyFirstProgram {
     public static void main(String[] args) {
 
         hello("Alex");
-        double l = 5;
-        double m = 3;
-        System.out.println(area(l));
-        System.out.println(area(l,m));
+        Square s = new Square(3);
+//        s.l = 3;
+
+        Rectangle r = new Rectangle(6, 4);
+//        r.a = 6;
+//        r.b = 4;
+        System.out.println(s.area());
+        System.out.println(r.area());
     }
     public static void hello(String s){
 
         System.out.println("Hello " + s + " !");
     }
 
-    public static double area (double len){
-        double s = len * len;
-//        System.out.println(s);
-        return s;
-    }
 
-    public static double area (double a, double b){
-        return a * b;
-    }
 }
 
 
