@@ -18,31 +18,18 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
  * Created by a.a.kornilov on 2/9/2018.
  */
 public class GroupCreationTests {
-//    ChromeDriver wd;
-    private WebDriver wd;
-    private WebDriverWait wait;
+//    private WebDriver wd;
+    FirefoxDriver wd;
+//    private WebDriverWait wait;
 
 
-    @BeforeTest
+    @BeforeMethod
     public void setUp () throws Exception{
-//        wd = new ChromeDriver ();
         wd = new FirefoxDriver();
-//        wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-        wait = new WebDriverWait(wd,10);
+        wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+//        wait = new WebDriverWait(wd,10);
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("unexpectedAlertBehavior","dismiss ");
-
-
-    }
-
-    @Test
-    public void GroupCreationTests() {
-
-//        wd.get("http://www.google.com");
-//        wd.findElement(By.name("q")).sendKeys("webdriver");
-//        wd.findElement(By.name("btnG")).click();
-//        wait.until(titleIs("webdriver - Поиск в Google"));
-
 
         wd.get("http://localhost/addressbook/group.php");
         wd.findElement(By.name("user")).click();
@@ -52,6 +39,11 @@ public class GroupCreationTests {
         wd.findElement(By.name("pass")).clear();
         wd.findElement(By.name("pass")).sendKeys("secret");
         wd.findElement(By.xpath("//form[@id='LoginForm']/input [3]")).click();
+
+    }
+
+    @Test
+    public void testGroupCreation() {
         wd.findElement(By.linkText("groups")).click();
         wd.findElement(By.name("new")).click();
         wd.findElement(By.name("group_name")).click();
@@ -65,16 +57,11 @@ public class GroupCreationTests {
         wd.findElement(By.name("group_footer")).sendKeys("test3");
         wd.findElement(By.name("submit")).click();
         wd.findElement(By.linkText("group page")).click();
-
-
-
-
     }
 
-    @AfterTest
+    @AfterMethod
     public void stop(){
         wd.quit();
         wd = null;
     }
-
 }
