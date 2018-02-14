@@ -23,7 +23,7 @@ public class ApplicationManager {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("unexpectedAlertBehavior","dismiss ");
 
-        wd.get("http://localhost/addressbook/group.php");
+        wd.get("http://localhost/addressbook");
         groupHelper = new GroupHelper(wd);
         navigationHelper = new NavigationHelper(wd);
         sessionHelper = new SessionHelper(wd);
