@@ -43,8 +43,8 @@ public class ContactHelper extends HelperBase{
     }
 
     public void editContact() {
-        click(By.xpath("//tr[.//input[@name = 'selected[]']]//a[contains(@href,'edit')]"));
-
+//        click(By.xpath("//tr[.//input[@name = 'selected[]']]//a[contains(@href,'edit')]"));
+        click(By.xpath("//tr//a[contains(@href,'edit')]"));
     }
 
     public void submitContactFormModification() {
