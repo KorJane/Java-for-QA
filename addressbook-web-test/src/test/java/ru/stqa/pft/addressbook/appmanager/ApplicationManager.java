@@ -1,27 +1,47 @@
 package ru.stqa.pft.addressbook.appmanager;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.openqa.selenium.remote.DesiredCapabilities.*;
 
 /**
  * Created by a.a.kornilov on 2/14/2018.
  */
 public class ApplicationManager {
-
-    FirefoxDriver wd;
+    WebDriver wd;
 
     private ContactHelper contactHelper;
     private NavigationHelper navigationHelper;
     private GroupHelper groupHelper;
     private SessionHelper sessionHelper;
+    private String browser;
+
+    public ApplicationManager(String browser) {
+
+        this.browser = browser;
+    }
 
     public void init() {
-        wd = new FirefoxDriver();
+        if (browser == BrowserType.FIREFOX ){
+            wd = new FirefoxDriver();
+        } else if (browser == BrowserType.CHROME){
+            wd = new ChromeDriver();
+        } else if (browser == BrowserType.IE){
+            wd = new InternetExplorerDriver();
+        }
+
+
         wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-        DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability("unexpectedAlertBehavior","dismiss ");
+//        DesiredCapabilities caps = new DesiredCapabilities();
+//        caps.setCapability("unexpectedAlertBehavior","dismiss ");
 
         wd.get("http://localhost/addressbook");
         groupHelper = new GroupHelper(wd);
