@@ -89,11 +89,11 @@ public class ContactHelper extends HelperBase{
         List<ContactData> contacts = new ArrayList<ContactData>();
         List<WebElement> elements = wd.findElements(By.cssSelector("tr[name = 'entry']"));
         for (WebElement element : elements){
-//            String name = element.getText();
-             List<WebElement> fields = element.findElements(By.tagName("td"));
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+            List<WebElement> fields = element.findElements(By.tagName("td"));
             String firstName = fields.get(2).getText();
             String lastName = fields.get(1).getText();
-            ContactData contact = new ContactData(firstName, lastName,null,null,null,null,null);
+            ContactData contact = new ContactData(id, firstName, lastName,"AK","Ukraine","test@test","777-777-777","test1");
             contacts.add(contact);
         }
         return contacts;
