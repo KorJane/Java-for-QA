@@ -8,6 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.tests.TestBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,14 +69,27 @@ public class ContactHelper extends HelperBase{
         click(By.name("update"));
     }
 
-    public void createContact(ContactData contactData, boolean b) {
-//        app.getNavigationHelper().goToNewContactPage();
+    public void create(ContactData contactData, boolean b) {
+//        TestBase.app.goTO().goToNewContactPage();
         click(By.linkText("add new"));
         fillContactForm(contactData, b);
         submitContactForm();
         returnToHomePage();
-
     }
+
+    public void modify(ContactData contact, int index) {
+        editContact(index);
+        fillContactForm(contact, false);
+        submitContactFormModification();
+        returnToHomePage();
+    }
+
+    public void delete(int index) {
+        selectContact(index);
+        deleteSelectedContact();
+        confirmContactDeletion();
+    }
+
 
     public boolean isThereAContact() {
         return isElementPresent(By.name("selected[]"));
@@ -85,7 +99,7 @@ public class ContactHelper extends HelperBase{
         return wd.findElements(By.name("selected[]")).size();
     }
 
-    public List<ContactData> getContactList() {
+    public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<ContactData>();
         List<WebElement> elements = wd.findElements(By.cssSelector("tr[name = 'entry']"));
         for (WebElement element : elements){

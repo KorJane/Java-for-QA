@@ -38,10 +38,7 @@ public class ApplicationManager {
             wd = new InternetExplorerDriver();
         }
 
-
         wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-//        DesiredCapabilities caps = new DesiredCapabilities();
-//        caps.setCapability("unexpectedAlertBehavior","dismiss ");
 
         wd.get("http://localhost/addressbook");
         groupHelper = new GroupHelper(wd);
@@ -57,15 +54,15 @@ public class ApplicationManager {
         wd = null;
     }
 
-    public GroupHelper getGroupHelper() {
+    public GroupHelper group() {
         return groupHelper;
     }
 
-    public NavigationHelper getNavigationHelper() {
+    public NavigationHelper goTO() {
         return navigationHelper;
     }
 
-    public ContactHelper getContactHelper() {
+    public ContactHelper contact() {
         return contactHelper;
     }
 }
