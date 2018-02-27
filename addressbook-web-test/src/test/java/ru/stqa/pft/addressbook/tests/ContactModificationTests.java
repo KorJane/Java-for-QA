@@ -22,7 +22,8 @@ public class ContactModificationTests extends TestBase {
     public void ensurePreconditions() {
         app.goTO().homePage();
         if (app.contact().all().size() == 0) {
-            app.contact().create(new ContactData("Anna", "Kor", "AK", "Ukraine", "test@test", "777-777-777", "test1"), true);
+            app.contact().create(new ContactData().withFirstName("Anna").withLastName("Kor").withNickName("AK").withAddress("Ukraine")
+                    .withEmail("test@test").withHomePhone("777-77-777").withMobilePhone("222").withWorkPhone("333").withGroup("test1"), true);
         }
     }
 
@@ -30,17 +31,17 @@ public class ContactModificationTests extends TestBase {
     public void testContactModification(){
         app.goTO().homePage();
         if(app.contact().all().size() ==0){
-            app.contact().create(new ContactData("Anna", "Kor", "AK", "Ukraine", "test@test", "777-777-777", "test1" ), true);
+            app.contact().create(new ContactData().withFirstName("Anna").withLastName("Kor").withNickName("AK").withAddress("Ukraine")
+                    .withEmail("test@test").withHomePhone("777-77-777").withMobilePhone("222").withWorkPhone("333").withGroup("test1"), true);
         }
         Contacts before = app.contact().all();
         ContactData modifyContact = before.iterator().next();
-        ContactData contact = new ContactData("AnnaMD", "KorMD", "AK", "Ukraine", "test@test", "777-777-777", "test1").withId(modifyContact.getId());
+        ContactData contact = new ContactData().withFirstName("AnnaMD").withLastName("KorMD").withNickName("AKMD").withAddress("Ukraine")
+                .withEmail("test@test").withHomePhone("777-77-777").withMobilePhone("222").withWorkPhone("333").withGroup("test1").withId(modifyContact.getId());
         app.contact().modify(contact);
+        Assert.assertEquals(app.contact().count(), before.size());
         Contacts after = app.contact().all();
-        Assert.assertEquals(after.size(), before.size());
-
         assertThat(after, equalTo(before.withOut(modifyContact).withAdded(contact)));
-
     }
 
 }

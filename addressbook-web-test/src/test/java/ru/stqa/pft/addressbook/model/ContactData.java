@@ -2,44 +2,124 @@ package ru.stqa.pft.addressbook.model;
 
 public class ContactData {
     private  int id;
-    private final String firstName;
-    private final String lastName;
-    private final String nickName;
-    private final String address;
-    private final String email;
-    private final String phone;
+    private String firstName;
+    private String lastName;
+    private String nickName;
+    private String address;
+    private String email;
+    private String homePhone;
+    private String mobilePhone;
+    private String workPhone;
     private String group;
+    private String allPhones;
 
 
-    public ContactData(int id, String firstName, String lastName, String nickName, String address, String email, String phone, String group) {
+    public ContactData(int id, String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone, String group) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickName = nickName;
         this.address = address;
         this.email = email;
-        this.phone = phone;
+        this.homePhone = homePhone;
+        this.mobilePhone = mobilePhone;
+        this.workPhone = workPhone;
         this.group = group;
 
     }
 
 
-    public ContactData(String firstName, String lastName, String nickName, String address, String email, String phone, String group) {
+
+    public ContactData(String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone, String group) {
         this.id = Integer.MAX_VALUE;
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickName = nickName;
         this.address = address;
         this.email = email;
-        this.phone = phone;
+        this.homePhone = homePhone;
+        this.mobilePhone = mobilePhone;
+        this.workPhone = workPhone;
         this.group = group;
+
     }
+
+    public ContactData() {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public ContactData(int id, String firstName, String lastName,String homePhone, String mobilePhone, String workPhone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.homePhone = homePhone;
+        this.mobilePhone = mobilePhone;
+        this.workPhone = workPhone;
+    }
+
 
 
     public ContactData withId(int id) {
         this.id = id;
         return this;
     }
+
+    public ContactData withFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public ContactData withLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public ContactData withNickName(String nickName) {
+        this.nickName = nickName;
+        return this;
+    }
+
+    public ContactData withAddress(String address) {
+        this.address = address;
+        return this;
+
+    }
+
+    public ContactData withEmail(String email) {
+        this.email = email;
+        return this;
+
+    }
+
+
+    public ContactData withHomePhone(String homePhone) {
+        this.homePhone = homePhone;
+        return this;
+    }
+
+    public ContactData withMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+        return this;
+    }
+
+    public ContactData withWorkPhone(String workPhone) {
+        this.workPhone = workPhone;
+        return this;
+    }
+
+    public ContactData withGroup(String group) {
+        this.group = group;
+        return this;
+    }
+
+    public ContactData withAllPhones(String allPhones) {
+        this.allPhones = allPhones;
+        return this;
+    }
+
+
 
     public int getId() {
         return id;
@@ -65,13 +145,28 @@ public class ContactData {
         return email;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getHomePhone() {
+        return homePhone;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public String getWorkPhone() {
+        return workPhone;
     }
 
     public String getGroup() {
         return group;
     }
+
+    public String getAllPhones() {
+        return allPhones;
+    }
+
+
+
 
     @Override
     public String toString() {
