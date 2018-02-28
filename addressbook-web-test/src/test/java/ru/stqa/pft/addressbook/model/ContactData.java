@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.model;
 
+import java.util.stream.Collectors;
+
 public class ContactData {
     private  int id;
     private String firstName;
@@ -15,6 +17,8 @@ public class ContactData {
     private String group;
     private String allPhones;
     private String allEmails;
+    private String fullName;
+    private String fullView;
 
 
     public ContactData(int id, String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone, String group) {
@@ -137,6 +141,17 @@ public class ContactData {
         return this;
     }
 
+    public ContactData withFullName(String fullName) {
+        this.fullName = fullName;
+        return this;
+    }
+
+    public ContactData withFullView(String fullView) {
+        this.fullView = fullView;
+        return this;
+    }
+
+
 
 
     public int getId() {
@@ -171,7 +186,6 @@ public class ContactData {
         return email3;
     }
 
-
     public String getHomePhone() {
         return homePhone;
     }
@@ -195,6 +209,15 @@ public class ContactData {
     public String getAllEmails() {
         return allEmails;
     }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getFullView() {
+        return fullView;
+    }
+
 
 
 

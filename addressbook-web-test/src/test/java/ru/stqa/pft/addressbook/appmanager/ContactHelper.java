@@ -11,6 +11,8 @@ import ru.stqa.pft.addressbook.model.Contacts;
 import java.util.ArrayList;
 import java.util.List;
 
+//import static ru.stqa.pft.addressbook.tests.ContactPageTests.cuted;
+
 /**
  * Created by a.a.kornilov on 2/14/2018.
  */
@@ -122,14 +124,12 @@ public class ContactHelper extends HelperBase{
             List<WebElement> fields = element.findElements(By.tagName("td"));
             String lastName = fields.get(1).getText();
             String firstName = fields.get(2).getText();
+            String fullName = firstName + " " + lastName;
             String address = fields.get(3).getText();
-//            String email = fields.get(4).getText();
             String allEmails = fields.get(4).getText();
             String allPhones = fields.get(5).getText();
-//            String[] phones = allPhones.split("\n");
-            ContactData contact = new ContactData().withId(id). withFirstName(firstName).withLastName(lastName).withAddress(address)
+            ContactData contact = new ContactData().withId(id). withFirstName(firstName).withLastName(lastName).withFullName(fullName).withAddress(address)
                     .withGroup("test1").withAllPhones(allPhones).withAllEmails(allEmails);
-//                            withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]);
             contactCache.add(contact);
         }
         return contactCache;
@@ -156,4 +156,45 @@ public class ContactHelper extends HelperBase{
                 .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work);
     }
 
+    public ContactData infoFromViewForm(ContactData contact) {
+        viewContact(contact.getId());
+        String content = wd.findElement(By.id("content")).getText();
+
+        List<String> stringList = splitted(content);
+        String correctedContent = replaced(stringList.toString());
+
+        wd.navigate().back();
+
+        return new ContactData().withId(contact.getId()).withFullView(correctedContent);
+    }
+
+
+    public static List<String> splitted(String list){
+
+        String[] strings = list.split("\n");
+        List<String> finalList = new ArrayList<String>();
+        for (int i = 0; i < strings.length; i ++){
+            if (!strings[i].isEmpty()){
+                if (strings[i].startsWith("H:")||strings[i].startsWith("M:")||strings[i].startsWith("W:")){
+                    finalList.add(cleaned(strings[i]));
+                }else if (!strings[i].startsWith("Member of:")){
+                    finalList.add((strings[i]));
+                }
+            }
+        }
+
+        return finalList;
+    }
+
+    public static String cleaned(String element){
+        return element.replaceAll("\\s", "").replaceAll("[-()]","").replaceAll("H:", "").replaceAll("M:", "").replaceAll("W:", "");
+    }
+
+    public static String replaced(String element){
+        return element.replaceAll(", ", "\n").replaceAll("\\[", "").replaceAll("\\]","");
+    }
+
+    private void viewContact(int id) {
+        wd.findElement(By.cssSelector(String.format("a[href='view.php?id=%s']",id))).click();
+    }
 }
