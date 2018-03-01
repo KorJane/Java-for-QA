@@ -39,6 +39,7 @@ public class ContactHelper extends HelperBase{
         type(By.name("home"),contactData.getHomePhone());
         type(By.name("mobile"),contactData.getMobilePhone());
         type(By.name("work"),contactData.getWorkPhone());
+        attach(By.name("photo"), contactData.getPhoto());
 
         if(creation){
             new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
@@ -159,10 +160,8 @@ public class ContactHelper extends HelperBase{
     public ContactData infoFromViewForm(ContactData contact) {
         viewContact(contact.getId());
         String content = wd.findElement(By.id("content")).getText();
-
         List<String> stringList = splitted(content);
         String correctedContent = replaced(stringList.toString());
-
         wd.navigate().back();
 
         return new ContactData().withId(contact.getId()).withFullView(correctedContent);
