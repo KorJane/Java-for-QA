@@ -1,9 +1,14 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 import java.io.File;
 import java.util.stream.Collectors;
 
+@XStreamAlias("contact")
 public class ContactData {
+    @XStreamOmitField
     private  int id;
     private String firstName;
     private String lastName;
@@ -250,12 +255,14 @@ public class ContactData {
 
     @Override
     public String toString() {
+
         return "ContactData{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
+                ", homePhone='" + homePhone + '\'' +
                 ", group='" + group + '\'' +
                 '}';
     }
