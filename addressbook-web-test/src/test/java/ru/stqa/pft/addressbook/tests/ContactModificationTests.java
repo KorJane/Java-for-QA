@@ -20,29 +20,27 @@ public class ContactModificationTests extends TestBase {
 
     @BeforeMethod
     public void ensurePreconditions() {
-        app.goTO().homePage();
-        if (app.contact().all().size() == 0) {
+
+        if(app.db().contacts().size() == 0){
+            app.goTO().homePage();
             app.contact().create(new ContactData().withFirstName("Anna").withLastName("Kor").withNickName("AK").withAddress("Ukraine")
-                    .withEmail("test@test").withHomePhone("777-77-777").withMobilePhone("222").withWorkPhone("333").withGroup("test1"), true);
+                    .withEmail("test@test").withHomePhone("777777").withMobilePhone("222").withWorkPhone("333").withGroup("test1"), true);
         }
     }
 
     @Test
     public void testContactModification(){
+        Contacts before = app.db().contacts();
         app.goTO().homePage();
-        if(app.contact().all().size() ==0){
-            app.contact().create(new ContactData().withFirstName("Anna").withLastName("Kor").withNickName("AK").withAddress("Ukraine")
-                    .withEmail("test@test").withHomePhone("777-77-777").withMobilePhone("222").withWorkPhone("333").withGroup("test1"), true);
-        }
-        Contacts before = app.contact().all();
         ContactData modifyContact = before.iterator().next();
         ContactData contact = new ContactData().withFirstName("AnnaMD").withLastName("KorMD").withNickName("AKMD").withAddress("Ukraine")
-                .withEmail("test@test").withHomePhone("777-77-777").withMobilePhone("222").withWorkPhone("333").withGroup("test1").withId(modifyContact.getId());
+                .withEmail("test@test").withHomePhone("777777")
+                .withMobilePhone("222").withWorkPhone("333").withGroup("test1").withId(modifyContact.getId());
         app.contact().modify(contact);
         Assert.assertEquals(app.contact().count(), before.size());
-        Contacts after = app.contact().all();
+        Contacts after = app.db().contacts();
         assertThat(after, equalTo(before.withOut(modifyContact).withAdded(contact)));
+        verifyContactListInUI();
     }
-
 }
 

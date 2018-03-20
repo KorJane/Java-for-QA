@@ -5,6 +5,8 @@
     "address": "address0",
     "email": "test@0",
     "homePhone": "1110",
+    "mobilePhone": "2220",
+    "workPhone": "3330",
     "group": "test1"
   },
   {
@@ -13,6 +15,8 @@
     "address": "address1",
     "email": "test@1",
     "homePhone": "1111",
+    "mobilePhone": "2221",
+    "workPhone": "3331",
     "group": "test1"
   },
   {
@@ -21,6 +25,8 @@
     "address": "address2",
     "email": "test@2",
     "homePhone": "1112",
+    "mobilePhone": "2222",
+    "workPhone": "3332",
     "group": "test1"
   }
 ]
