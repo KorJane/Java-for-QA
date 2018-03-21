@@ -120,12 +120,13 @@ public class ContactData {
 
     private File photo;
 
+    @Expose
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
     private Set<GroupData> groups = new HashSet<GroupData>();
 
 
-    public ContactData(int id, String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone){ //, String group) {
+    public ContactData(int id, String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone, Set<GroupData> groups){ //, String group) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -135,11 +136,11 @@ public class ContactData {
         this.homePhone = homePhone;
         this.mobilePhone = mobilePhone;
         this.workPhone = workPhone;
-//        this.group = group;
+        this.groups = groups;
 
     }
 
-    public ContactData(String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone){ //, String group) {
+    public ContactData(String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone, Set<GroupData> groups){ //, String group) {
         this.id = Integer.MAX_VALUE;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -149,7 +150,7 @@ public class ContactData {
         this.homePhone = homePhone;
         this.mobilePhone = mobilePhone;
         this.workPhone = workPhone;
-//        this.group = group;
+        this.groups = groups;
 
     }
 
@@ -345,6 +346,11 @@ public class ContactData {
                 ", workPhone='" + workPhone + '\'' +
                 ", groups=" + groups +
                 '}';
+    }
+
+    public ContactData inGroup(GroupData group) {
+        groups.add(group);
+        return this;
     }
 
 //    public File getPhoto() {

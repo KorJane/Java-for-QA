@@ -6,27 +6,6 @@
     "email": "test@0",
     "homePhone": "1110",
     "mobilePhone": "2220",
-    "workPhone": "3330",
-    "group": "test1"
-  },
-  {
-    "firstName": "firstName1",
-    "lastName": "lastName1",
-    "address": "address1",
-    "email": "test@1",
-    "homePhone": "1111",
-    "mobilePhone": "2221",
-    "workPhone": "3331",
-    "group": "test1"
-  },
-  {
-    "firstName": "firstName2",
-    "lastName": "lastName2",
-    "address": "address2",
-    "email": "test@2",
-    "homePhone": "1112",
-    "mobilePhone": "2222",
-    "workPhone": "3332",
-    "group": "test1"
+    "workPhone": "3330"
   }
 ]

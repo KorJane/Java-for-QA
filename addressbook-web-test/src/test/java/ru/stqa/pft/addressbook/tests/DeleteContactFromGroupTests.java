@@ -15,6 +15,8 @@ public class DeleteContactFromGroupTests extends TestBase {
 
     @BeforeMethod
     public void ensurePreconditions() {
+
+        
         if(app.db().contactsWithGroups("test1").size() == 0){
             app.contact().create(new ContactData().withFirstName("Anna").withLastName("Kor").withNickName("AK").withAddress("Ukraine")
                             .withEmail("test@test").withHomePhone("777-77-777").withMobilePhone("222").withWorkPhone("333")
