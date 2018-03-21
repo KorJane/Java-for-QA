@@ -3,10 +3,13 @@ package ru.stqa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @XStreamAlias("contact")
@@ -88,31 +91,15 @@ public class ContactData {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "ContactData{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", homePhone='" + homePhone + '\'' +
-                ", mobilePhone='" + mobilePhone + '\'' +
-                ", workPhone='" + workPhone + '\'' +
-                ", allPhones='" + allPhones + '\'' +
-                '}';
-    }
-
     //    @Transient
     @Expose
-
     @Column (name = "work")
     @Type(type = "text")
     private String workPhone;
 
-    @Expose
-    @Transient
-    private String group;
+//    @Expose
+//    @Transient
+//    private String group;
 
     @Transient
     private String allPhones;
@@ -133,8 +120,12 @@ public class ContactData {
 
     private File photo;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private Set<GroupData> groups = new HashSet<GroupData>();
 
-    public ContactData(int id, String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone, String group) {
+
+    public ContactData(int id, String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone){ //, String group) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -144,11 +135,11 @@ public class ContactData {
         this.homePhone = homePhone;
         this.mobilePhone = mobilePhone;
         this.workPhone = workPhone;
-        this.group = group;
+//        this.group = group;
 
     }
 
-    public ContactData(String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone, String group) {
+    public ContactData(String firstName, String lastName, String nickName, String address, String email, String homePhone, String mobilePhone, String workPhone){ //, String group) {
         this.id = Integer.MAX_VALUE;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -158,7 +149,7 @@ public class ContactData {
         this.homePhone = homePhone;
         this.mobilePhone = mobilePhone;
         this.workPhone = workPhone;
-        this.group = group;
+//        this.group = group;
 
     }
 
@@ -233,10 +224,10 @@ public class ContactData {
         return this;
     }
 
-    public ContactData withGroup(String group) {
-        this.group = group;
-        return this;
-    }
+//    public ContactData withGroup(String group) {
+//        this.group = group;
+//        return this;
+//    }
 
     public ContactData withAllPhones(String allPhones) {
         this.allPhones = allPhones;
@@ -313,9 +304,9 @@ public class ContactData {
         return workPhone;
     }
 
-    public String getGroup() {
-        return group;
-    }
+//    public String getGroup() {
+//        return group;
+//    }
 
     public String getAllPhones() {
         return allPhones;
@@ -329,12 +320,31 @@ public class ContactData {
         return fullName;
     }
 
+    public Groups getGroups() {
+        return new Groups(groups);
+    }
+
     public String getFullView() {
         return fullView;
     }
 
     public File getPhoto() {
         return photo;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactData{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", homePhone='" + homePhone + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", workPhone='" + workPhone + '\'' +
+                ", groups=" + groups +
+                '}';
     }
 
 //    public File getPhoto() {

@@ -42,7 +42,7 @@ public class ContactHelper extends HelperBase{
         attach(By.name("photo"), contactData.getPhoto());
 
         if(creation){
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+//            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
@@ -130,7 +130,8 @@ public class ContactHelper extends HelperBase{
             String allEmails = fields.get(4).getText();
             String allPhones = fields.get(5).getText();
             ContactData contact = new ContactData().withId(id). withFirstName(firstName).withLastName(lastName).withFullName(fullName).withAddress(address)
-                    .withGroup("test1").withAllPhones(allPhones).withAllEmails(allEmails);
+//                    .withGroup("test1")
+                    .withAllPhones(allPhones).withAllEmails(allEmails);
             contactCache.add(contact);
         }
         return contactCache;
@@ -196,4 +197,38 @@ public class ContactHelper extends HelperBase{
     private void viewContact(int id) {
         wd.findElement(By.cssSelector(String.format("a[href='view.php?id=%s']",id))).click();
     }
+
+    public void addToGroup(ContactData contact) {
+        selectContactById(contact.getId());
+        new Select(wd.findElement(By.name("to_group"))).selectByVisibleText("test1"); //contactData.getGroup());
+        submitAdditionToGroup();
+        goToSpecialGroupPage();
+
+    }
+
+    private void submitAdditionToGroup() {
+            click(By.name("add"));
+    }
+
+    private void goToSpecialGroupPage() {
+        click(By.linkText("group page \"test1\""));
+    }
+
+    public void selectGroups() {
+        new Select(wd.findElement(By.name("group"))).selectByVisibleText("test1"); //contactData.getGroup());
+    }
+
+    public void DeleteFromGroup(ContactData contact) {
+        selectContactById(contact.getId());
+        submitGroupDeletion();
+
+
+
+    }
+
+    private void submitGroupDeletion() {
+        click(By.name("remove"));
+        goToSpecialGroupPage();
+    }
+
 }

@@ -10,6 +10,7 @@ import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +46,30 @@ public class DbHelper {
         session.close();
         return new Contacts(result);
     }
+
+
+    public Contacts contactsWithGroups(String groupName){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<ContactData> result = session.createQuery( "from ContactData where deprecated = '0000-00-00'").list();
+        List<GroupData> resultFromGroups = session.createQuery( "from GroupData where group_name = '" + groupName + "'" ).list();
+
+       List<ContactData> updatedResult = new ArrayList<ContactData>();
+
+        for ( ContactData contact : result ) {
+            Groups groups = contact.getGroups();
+            for( GroupData group : groups){
+                if(group.getId() == resultFromGroups.get(0).getId()){
+                    updatedResult.add(contact);
+                }
+            }
+        }
+        session.getTransaction().commit();
+        session.close();
+        return new Contacts(updatedResult);
+
+    }
+
 
 
 }
