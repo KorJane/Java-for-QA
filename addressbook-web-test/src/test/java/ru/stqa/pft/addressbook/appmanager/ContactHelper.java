@@ -214,19 +214,16 @@ public class ContactHelper extends HelperBase{
     }
 
     private void goToSpecialGroupPage() {
-        click(By.linkText("group page \"test1\""));
+        click(By.partialLinkText("group page"));
     }
 
-    public void selectGroups() {
-        new Select(wd.findElement(By.name("group"))).selectByVisibleText("test1"); //contactData.getGroup());
+    public void selectGroups(String groupName) {
+        new Select(wd.findElement(By.name("group"))).selectByVisibleText(groupName); //contactData.getGroup());
     }
 
     public void DeleteFromGroup(ContactData contact) {
         selectContactById(contact.getId());
         submitGroupDeletion();
-
-
-
     }
 
     private void submitGroupDeletion() {
