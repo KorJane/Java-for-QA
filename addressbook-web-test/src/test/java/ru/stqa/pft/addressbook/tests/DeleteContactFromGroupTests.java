@@ -37,7 +37,7 @@ public class DeleteContactFromGroupTests extends TestBase {
             }
         }
 
-        if(app.db().contactsWithGroups(next.getName()).size() == 0){
+        if(app.db().contactsWithGroups(next.getName(), next.getId()).size() == 0){
             app.contact().create(new ContactData().withFirstName("Anna").withLastName("Kor").withNickName("AK").withAddress("Ukraine")
             .withEmail("test@test").withHomePhone("777-77-777").withMobilePhone("222").withWorkPhone("333").inGroup(next), true);
         }
@@ -51,11 +51,11 @@ public class DeleteContactFromGroupTests extends TestBase {
             Groups groups = contact.getGroups();
             if(groups.size()!= 0){
                 GroupData selectedGroup = groups.iterator().next();
-                    Contacts before = app.db().contactsWithGroups(selectedGroup.getName());
+                    Contacts before = app.db().contactsWithGroups(selectedGroup.getName(),selectedGroup.getId());
                     app.goTO().homePage();
                     app.contact().selectGroups(selectedGroup.getName());
                     app.contact().DeleteFromGroup(contact);
-                    Contacts after = app.db().contactsWithGroups(selectedGroup.getName());
+                    Contacts after = app.db().contactsWithGroups(selectedGroup.getName(), selectedGroup.getId());
                     assertThat(after, equalTo(before.withOut(contact)));
                     return;
             }

@@ -201,10 +201,12 @@ public class ContactHelper extends HelperBase{
         wd.findElement(By.cssSelector(String.format("a[href='view.php?id=%s']",id))).click();
     }
 
-    public void addToGroup(ContactData contact, String groupName) {
+    public void addToGroup(ContactData contact,  int id ) {
         selectContactById(contact.getId());
 //        new Select(wd.findElement(By.name("to_group"))).selectByVisibleText("test1"); //contactData.getGroup());
-        new Select(wd.findElement(By.name("to_group"))).selectByVisibleText(groupName); //contactData.getGroup());
+        new Select(wd.findElement(By.name("to_group"))).selectByValue(String.valueOf(id));
+               //selectByVisibleText(groupName); //contactData.getGroup());
+
 
         submitAdditionToGroup();
         goToSpecialGroupPage();
