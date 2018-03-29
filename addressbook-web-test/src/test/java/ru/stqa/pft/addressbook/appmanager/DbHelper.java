@@ -73,16 +73,6 @@ public class DbHelper {
 
     }
 
-
-    public Groups allAddedGroups(String groupName) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        List<GroupData> result = session.createQuery( "from GroupData where group_name = '" + groupName + "'").list();
-        session.getTransaction().commit();
-        session.close();
-        return new Groups(result);
-    }
-
     public GroupData groupWithMaxId(String groupName) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -102,7 +92,4 @@ public class DbHelper {
         session.close();
         return maxGroup;
     }
-
-
-
 }

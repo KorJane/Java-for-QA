@@ -7,9 +7,6 @@ import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -32,104 +29,40 @@ public class AddContactToGroupTests extends TestBase{
                             .withEmail("test@test").withHomePhone("777-77-777").withMobilePhone("222").withWorkPhone("333"), true);
             app.goTO().homePage();
         }
-
     }
 
     @Test
     public void testAddContactToGroup(){
 
-
         Groups allGroups = app.db().groups(); // собираем все существующие группы и записываем их имена в список
-        List<String> allGroupNames = new ArrayList<String>();
-        for (GroupData group : allGroups ){
-            allGroupNames.add(group.getName());
-        }
-        System.out.println("все существующие группы" + allGroupNames);
-
         Contacts allContacts = app.db().contacts(); // собираем все группы под контаком и записываем их имена в список
         ContactData selectedContact = allContacts.iterator().next();
-        Groups groupsNameFromContact = selectedContact.getGroups();
+        Groups groupsNameFromContact = selectedContact.getGroups(); // все группы под первым контактом
 
-        List<String> allGroupsNameFromContacts = new ArrayList<String>();
-        for(GroupData group : groupsNameFromContact){
-            allGroupsNameFromContacts.add(group.getName());
-        }
-
-        System.out.println("все группы под контактом" + allGroupsNameFromContacts);
-
-        if(allGroupNames.size() != allGroupsNameFromContacts.size()){   // если размер списков не равен
-            for(String groupName : allGroupNames){ // для каждой группы в списке проверяем входит ли он в список группп конкретного выбранного контакта
-                if(!allGroupsNameFromContacts.contains(groupName)){ // если нет,  то добавляем эту группу к контакту
-
-                    GroupData next = allGroups.iterator().next();
-                    if(next.getName() == groupName ){ // перебираем все группы по именам,  пока не находим группу с именнем равной искомой группе groupName
-
-
-
-                        Contacts before = app.db().contactsWithGroups(groupName, next.getId());
-                        app.goTO().homePage();
-                        int id = next.getId();
-                        System.out.println("ID которое должно быть выбранно " + id);
-                        app.contact().addToGroup(selectedContact,  next.getId());//allGroups.iterator().next().withName(groupName).getName());
-
-                        Contacts after = app.db().contactsWithGroups(groupName, next.getId());
-
-                        assertThat(after, equalTo(before.withAdded(selectedContact)));
-                    }
+        if (allGroups.size() != groupsNameFromContact.size()){  // если количество групп под контактов равно общему кол-ву групп
+            for (GroupData groupFromList : allGroups){ // для каждой группы в общем списке проверяем,  входит ли она в список групп под контактом
+                if(!groupsNameFromContact.contains(groupFromList)){ // если группы из общего списка нет в группе контакта  - добавляем эту группу в список групп контакта
+                    Contacts before = app.db().contactsWithGroups(groupFromList.getName(),groupFromList.getId());
+                    app.goTO().homePage();
+                    app.contact().addToGroup(selectedContact,  groupFromList.getId());
+                    Contacts after = app.db().contactsWithGroups(groupFromList.getName(),groupFromList.getId());
+                    ContactData updatedContact = app.db().contacts().iterator().next();// основленный контакт с базы с добавленной новой группой
+                    assertThat(after, equalTo(before.withAdded(updatedContact)));
+                    return;
                 }
             }
-
-        }else{ // если в контакте уже есть все группы с общего списка,  создаем новую группу и добавляем её под контакт
-
+        }
+        else{ // если в контакте уже есть все группы с общего списка,  создаем новую группу и добавляем её под контакт
             app.goTO().GroupPage();
             GroupData additionalGroup = new GroupData().withName("additionalGroup");
             app.group().create(additionalGroup);
-//            GroupData newGroup = app.db().groups().iterator().next();
-
-            Groups additionGroups = app.db().allAddedGroups("additionalGroup");
-            List<Integer> listOfGroupId = new ArrayList<Integer>();
-            for( GroupData additionGroup : additionGroups ){
-                listOfGroupId.add(additionGroup.getId());
-            }
-//            Contacts before = app.db().contactsWithGroups(newGroup.getName(),newGroup.getId()); //,newGroup.getId() );
-            GroupData maxIdForAddedGroup = app.db().groupWithMaxId("additionalGroup");
-            Contacts before = app.db().contactsWithGroups(maxIdForAddedGroup.getName(),maxIdForAddedGroup.getId()); //,newGroup.getId() );
-
+            GroupData addedGroupWithMaxId = app.db().groupWithMaxId(additionalGroup.getName());
+            Contacts before = app.db().contactsWithGroups(addedGroupWithMaxId.getName(),addedGroupWithMaxId.getId());
             app.goTO().homePage();
-            app.contact().addToGroup(selectedContact,maxIdForAddedGroup.getId());// newGroup.getId());
-            ContactData updatedContact = app.db().contacts().iterator().next();//.inGroup(newGroup); // основленный контакт с базы с добавленной новой группой
-
-            Contacts after = app.db().contactsWithGroups(maxIdForAddedGroup.getName(), maxIdForAddedGroup.getId());//,newGroup.getId());
+            app.contact().addToGroup(selectedContact,addedGroupWithMaxId.getId());
+            ContactData updatedContact = app.db().contacts().iterator().next();// основленный контакт с базы с добавленной новой группой
+            Contacts after = app.db().contactsWithGroups(addedGroupWithMaxId.getName(), addedGroupWithMaxId.getId());//,newGroup.getId());
             assertThat(after, equalTo(before.withAdded(updatedContact)));
         }
-
-
-
-
-
-//        if(allGroups.size() == selectedContact.getGroups().size()){
-//            app.goTO().GroupPage();
-//            app.group().create(new GroupData().withName("additionalGroup"));
-//            GroupData newGroup = app.db().groups().iterator().next().withName("additionalGroup");
-//            app.goTO().homePage();
-//            app.contact().addToGroup(selectedContact,newGroup.getName());
-//        }
-
-
-
-//        Contacts before = app.db().contactsWithGroups("test1");
-//        ContactData addedToGroupContact;
-//        if(before.size() == 0){
-//            Contacts c = app.db().contacts();
-//            addedToGroupContact = c.iterator().next();
-//        }else{
-//            addedToGroupContact = before.iterator().next();
-//
-//        }
-//        app.goTO().homePage();
-//        app.contact().addToGroup(addedToGroupContact);
-//        Contacts after = app.db().contactsWithGroups("test1");
-//        assertThat(after, equalTo(before.withAdded(addedToGroupContact)));
     }
-
 }
